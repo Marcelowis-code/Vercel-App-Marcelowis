@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Control de Sensor Parking</title>
+</head>
+<body>
+    <h2>Control de Umbral</h2>
+    <input type="number" id="umbral" placeholder="Introduce umbral (mm)">
+    <button onclick="actualizarUmbral()">Enviar</button>
+
+    <script>
+        async function actualizarUmbral() {
+            let umbral = document.getElementById("umbral").value;
+            if (umbral) {
+                let respuesta = await fetch('https://sensorparkingesp32-default-rtdb.firebaseio.com/umbral.json', {
+                    method: "PUT",
+                    body: JSON.stringify(parseInt(umbral)),
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                });
+                let datos = await respuesta.json();
+                console.log("Umbral actualizado:", datos);
+                alert("Umbral actualizado a " + umbral + " mm");
+            } else {
+                alert("Introduce un valor válido");
+            }
+        }
+    </script>
+</body>
+</html>
